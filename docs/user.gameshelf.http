@@ -1,0 +1,54 @@
+@host=localhost:{{API_PORT}}
+
+### Login Authentication
+### login
+POST http://{{host}}/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "john@doe.com",
+    "password": "12345678"
+}
+
+### List all Users
+
+GET http://{{host}}/users
+Accept: application/json
+
+### Create a new User
+
+POST http://{{host}}/users
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@doe.com",
+    "password": "12345678"
+}
+
+### Get Current User Profile
+
+GET http://{{host}}/users/me
+Accept: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
+### Update Current User Profile
+
+## All fields are optional
+PUT http://{{host}}/users/me
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
+{
+    "password": "87654321"
+}
+
+### Delete Current User
+
+DELETE http://{{host}}/users/me
+Accept: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+

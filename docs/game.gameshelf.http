@@ -1,0 +1,35 @@
+@host=localhost:{{API_PORT}}
+
+### Login Authentication
+
+### login
+POST http://{{host}}/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "john@doe.com",
+    "password": "12345678"
+}
+
+### List all Games
+
+GET http://{{host}}/games
+Accept: application/json
+
+### Get Game Details
+
+@id=3498
+GET http://{{host}}/games/details/{{id}}
+Accept: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
+### Search Games
+
+## @page=1 (optional) (default is 1)
+## @pagesize=10 (optional) (default is 10)
+@query=gta
+GET http://{{host}}/games/search?query={{query}}
+Accept: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
