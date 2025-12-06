@@ -1,41 +1,46 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Put, Req } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { User } from "@prisma/client";
-import type { CreateUserDTO } from "./user.dtos";
+import type { CreateUserDTO, ReadUserDTO, UpdateUserDTO } from "./user.dtos";
+import { Public } from "../auth/auth.guard";
 
 @Controller('users')
 export class UserController {
     constructor(private userService: UserService) {}
 
+    @Public()
     @Get('/')
-    findAll(): Promise<User[]> {
+    findAll(): Promise<ReadUserDTO[]> {
         return this.userService.findAll();
     }
 
-    @Get('/:id')
+    @Get('/me')
     findById(
-        @Param ('id') id: string
-    ): Promise<User | null> {
-        return this.userService.findById(id);
+        @Req() req: { user: { sub: string } }
+    ): Promise<ReadUserDTO | null> {
+        return this.userService.findById(req.user.sub);
     }
+
+
+    @Delete('/me')
     deleteById(
-        @Param('id') id: string
-    ): Promise<User> {
-        return this.userService.deleteById(id);
+        @Req() req: { user: { sub: string } }
+    ): Promise<ReadUserDTO> {
+        return this.userService.deleteById(req.user.sub);
     }
 
-    @Put('/:id')
+    @Put('/me')
     updateUser(
-        @Param('id') id: string,
-        @Body() data: { name?: string; email?: string }
-    ): Promise<User> {
-        return this.userService.updateUser(id, data);
+        @Req() req: { user: { sub: string } },
+        @Body() data: UpdateUserDTO
+    ): Promise<ReadUserDTO> {
+        return this.userService.updateUser(req.user.sub, data);
     }
 
+    @Public()
     @Post('/')
     create(
         @Body() data: CreateUserDTO
-    ): Promise<User> {
+    ): Promise<ReadUserDTO> {
         return this.userService.createUser(data);
     }
 }

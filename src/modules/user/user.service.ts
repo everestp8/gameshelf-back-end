@@ -1,42 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, User } from '@prisma/client';
-import { createHash } from 'node:crypto';
-import { CreateUserDTO, ReadUserDTO } from './user.dtos';
-
-const hashPassword = (password: string): string =>
-    createHash('sha256').update(password).digest('hex');
+import { User } from '@prisma/client';
+import { CreateUserDTO, fromCreateUserDTO, fromUpdateUserDTO, ReadUserDTO, toReadUserDTO, UpdateUserDTO } from './user.dtos';
 
 @Injectable()
 export class UserService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService) { }
 
-    async findAll(): Promise<User[]> {
-        return this.prisma.user.findMany();
+    async findAll(): Promise<ReadUserDTO[]> {
+        return this.prisma.user.findMany()
+            .then(users => users.map(user => toReadUserDTO(user)));
     }
 
-    async findById(id: string): Promise<User | null> {
+    async findById(id: string): Promise<ReadUserDTO | null> {
         return this.prisma.user.findUnique({
             where: { id },
-        });
+        }).then(user => user ? toReadUserDTO(user) : null);
     }
 
-    async deleteById(id: string): Promise<User> {
+    async findByEmail(email: string): Promise<User | null> {
+        return this.prisma.user.findUnique({
+            where: { email },
+        })
+    }
+
+    async deleteById(id: string): Promise<ReadUserDTO> {
         return this.prisma.user.delete({
             where: { id },
-        });
+        }).then(user => toReadUserDTO(user));
     }
 
-    async updateUser(id: string, data: Prisma.UserUpdateInput): Promise<User> {
+    async updateUser(id: string, data: UpdateUserDTO): Promise<ReadUserDTO> {
         return this.prisma.user.update({
             where: { id },
-            data,
-        });
+            data: fromUpdateUserDTO(data),
+        }).then(user => toReadUserDTO(user));
     }
 
     async createUser(data: CreateUserDTO): Promise<User> {
-        const hash = hashPassword(data.password);
-        return this.prisma.user.create({ data: { name: data.name, email: data.email, password_hash: hash } });
+        return this.prisma.user.create({ data: fromCreateUserDTO(data) });
     }
 }
 
