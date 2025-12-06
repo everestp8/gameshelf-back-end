@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Post, Put, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Req } from "@nestjs/common";
 import { UserService } from "./user.service";
-import type { CreateUserDTO, ReadUserDTO, UpdateUserDTO } from "./user.dtos";
+import { CreateUserDTO, type ReadUserDTO, UpdateUserDTO } from "./user.dtos";
 import { Public } from "../auth/auth.guard";
 
 @Controller('users')
@@ -13,13 +13,19 @@ export class UserController {
         return this.userService.findAll();
     }
 
-    @Get('/me')
+    @Get('/profile/me')
     findById(
         @Req() req: { user: { sub: string } }
     ): Promise<ReadUserDTO | null> {
         return this.userService.findById(req.user.sub);
     }
 
+    @Get('/profile/:email')
+    async profileByEmail(
+        @Param('email') email: string
+    ): Promise<ReadUserDTO | null> {
+        return this.userService.profileByEmail(email)
+    }
 
     @Delete('/me')
     deleteById(
