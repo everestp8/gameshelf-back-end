@@ -1,9 +1,13 @@
 import { Prisma, User } from "@prisma/client";
 import { hashPassword } from "./user.utils";
+import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
 
-export interface CreateUserDTO {
+export class CreateUserDTO {
+    @IsString()
     name: string;
+    @IsEmail()
     email: string;
+    @MinLength(6)
     password: string;
 }
 
@@ -33,9 +37,15 @@ export function toReadUserDTO(user: User): ReadUserDTO {
     }
 }
 
-export interface UpdateUserDTO {
+export class UpdateUserDTO {
+    @IsOptional()
+    @IsString()
     name?: string;
+    @IsOptional()
+    @IsEmail()
     email?: string;
+    @IsOptional()
+    @MinLength(6)
     password?: string;
 }
 

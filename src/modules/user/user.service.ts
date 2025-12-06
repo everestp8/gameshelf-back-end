@@ -37,8 +37,9 @@ export class UserService {
         }).then(user => toReadUserDTO(user));
     }
 
-    async createUser(data: CreateUserDTO): Promise<User> {
-        return this.prisma.user.create({ data: fromCreateUserDTO(data) });
+    async createUser(data: CreateUserDTO): Promise<ReadUserDTO> {
+        return this.prisma.user.create({ data: fromCreateUserDTO(data) })
+            .then(user => toReadUserDTO(user));
     }
 }
 
