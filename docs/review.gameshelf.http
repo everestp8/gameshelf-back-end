@@ -1,0 +1,43 @@
+@host=localhost:{{API_PORT}}
+
+### Login Authentication
+
+### login
+POST http://{{host}}/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "john@doe.com",
+    "password": "12345678"
+}
+
+### List all current user Reviews
+
+GET http://{{host}}/reviews/me
+Accept: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
+### List all game Reviews
+
+@userId=59f7761b-8778-47c8-9555-92a1cc706e35
+@gameId=91fa9f66-8abd-4e6d-a545-f74528fba1ad
+GET http://{{host}}/reviews?userId={{userId}}
+Accept: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
+### Create a new Review
+
+POST http://{{host}}/reviews
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
+{
+    "title": "Amazing Game!",
+    "content": "I had a fantastic time playing this game. Highly recommended!",
+    "rating": 9.5,
+    "gameId": "91fa9f66-8abd-4e6d-a545-f74528fba1ad"
+
+}
+
