@@ -19,14 +19,7 @@ export class UserController {
     ): Promise<ReadUserDTO | null> {
         return this.userService.findById(req.user.sub);
     }
-
-    @Get('/profile/:email')
-    async profileByEmail(
-        @Param('email') email: string
-    ): Promise<ReadUserDTO | null> {
-        return this.userService.profileByEmail(email)
-    }
-
+    
     @Delete('/me')
     deleteById(
         @Req() req: { user: { sub: string } }
