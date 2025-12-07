@@ -17,9 +17,23 @@ Content-Type: application/json
 GET http://{{host}}/games
 Accept: application/json
 
-### Get Game Details
+### List best Games
+
+## best-ratsd | most-reviewed
+@ranking=most-reviewed
+GET http://{{host}}/games?ranking={{ranking}}
+Accept: application/json
+
+### Get Rawg Gane Details
 
 @id=3498
+GET http://{{host}}/games/rawg/{{id}}
+Accept: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
+### Get Game Details
+
+@id=91fa9f66-8abd-4e6d-a545-f74528fba1ad
 GET http://{{host}}/games/details/{{id}}
 Accept: application/json
 Authorization: Bearer {{login.response.body.access_token}}
