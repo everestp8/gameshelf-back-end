@@ -1,5 +1,5 @@
 import { Prisma, Review } from "@prisma/client";
-import { IsNumber, IsString, IsUUID, Max, Min } from "class-validator";
+import { IsNumber, IsString, Max, Min } from "class-validator";
 
 export class CreateReviewDTO {
     @IsString()
@@ -9,7 +9,7 @@ export class CreateReviewDTO {
     @IsNumber()
     @Max(10) @Min(0)
     rating: number;
-    @IsUUID()
+    @IsString()
     gameId: string;
 }
 
