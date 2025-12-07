@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
     "email": "john@doe.com",
-    "password": "87654321"
+    "password": "12345678"
 }
 
 ### List all Users
@@ -18,13 +18,13 @@ Accept: application/json
 
 ### Create a new User
 
-POST http://{{host}}/users/
+POST http://{{host}}/users
 Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "Jane Doe",
-    "email": "jane2@doe.com",
+    "name": "John Doe",
+    "email": "john@doe.com",
     "password": "12345678"
 }
 
@@ -36,8 +36,8 @@ Authorization: Bearer {{login.response.body.access_token}}
 
 ### Get other's User Profile
 
-@user_email="jane@doe.com"
-GET http://{{host}}/users/profile/{{user_email}}
+@user_id=1c6c34bc-7a0d-4ab9-b072-f083d7e72ae4
+GET http://{{host}}/users/profile/{{user_id}}
 Accept: application/json
 Authorization: Bearer {{login.response.body.access_token}}
 
@@ -50,7 +50,7 @@ Content-Type: application/json
 Authorization: Bearer {{login.response.body.access_token}}
 
 {
-    "password": "87654321"
+    "password": "12345678"
 }
 
 ### Delete Current User

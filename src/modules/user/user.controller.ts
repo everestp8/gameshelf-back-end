@@ -14,17 +14,17 @@ export class UserController {
     }
 
     @Get('/profile/me')
-    findById(
+    findOwnProfile(
         @Req() req: { user: { sub: string } }
     ): Promise<ReadUserDTO | null> {
         return this.userService.findById(req.user.sub);
     }
 
-    @Get('/profile/:email')
-    async profileByEmail(
-        @Param('email') email: string
+    @Get('/profile/:id')
+    async findById(
+        @Param('id') id: string
     ): Promise<ReadUserDTO | null> {
-        return this.userService.profileByEmail(email)
+        return this.userService.findById(id);
     }
 
     @Delete('/me')
