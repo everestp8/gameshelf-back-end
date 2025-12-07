@@ -20,9 +20,9 @@ Authorization: Bearer {{login.response.body.access_token}}
 
 ### List all game Reviews
 
-@userId=59f7761b-8778-47c8-9555-92a1cc706e35
-@gameId=91fa9f66-8abd-4e6d-a545-f74528fba1ad
-GET http://{{host}}/reviews?userId={{userId}}
+@userId=19c1f635-6f0e-4b90-acf1-5eb9ab3efb9c
+@gameId=25097
+GET http://{{host}}/reviews?gameId={{gameId}}
 Accept: application/json
 Authorization: Bearer {{login.response.body.access_token}}
 
@@ -37,7 +37,7 @@ Authorization: Bearer {{login.response.body.access_token}}
     "title": "Amazing Game!",
     "content": "I had a fantastic time playing this game. Highly recommended!",
     "rating": 9.5,
-    "gameId": "91fa9f66-8abd-4e6d-a545-f74528fba1ad"
+    "gameId": "25097"
 
 }
 

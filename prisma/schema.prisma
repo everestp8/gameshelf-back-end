@@ -18,9 +18,8 @@ model User {
 }
 
 model Game {
-    id        String   @id @default(uuid())
+    id        String   @id
     title     String
-    apiId     String  
     gameData  Json
     Reviews   Review[]
     createdAt DateTime @default(now())

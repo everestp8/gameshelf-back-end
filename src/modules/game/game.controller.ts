@@ -10,28 +10,24 @@ export class GameController {
     @Public()
     @Get('/')
     async getAllGames(
-        @Query() queries: { ranking: string }
+        @Query() queries: { ranking: string, quantity?: number }
     ): Promise<GameSummaryDTO[]> {
+        const quantity = queries.quantity || 10;
         if (queries.ranking === 'most-reviewed')
-            return await this.gameService.mostReviewedGames();
+            return await this.gameService.mostReviewedGames(quantity);
         if (queries.ranking === 'best-rated')
-            return await this.gameService.bestRatedGames();
+            return await this.gameService.bestRatedGames(quantity);
+        if (queries.ranking === 'popular')
+            return await this.gameService.popularGames(quantity);
 
         return await this.gameService.getAllGames();
     }
 
     @Get('/details/:id')
-    async getGameById(
+    async getGameDetails(
         @Param('id') id: string
     ): Promise<GameDetailsDTO> {
         return await this.gameService.fetchGameDetails(id);
-    }
-
-    @Get('/rawg/:id')
-    async getGameByIdInRawg(
-        @Param('id') id: string
-    ): Promise<GameDetailsDTO> {
-        return await this.gameService.fetchGameInRawg(parseInt(id));
     }
 
     @Get('/search')

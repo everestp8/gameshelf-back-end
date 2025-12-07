@@ -17,7 +17,7 @@ export class GameApi {
         private readonly httpService: HttpService
     ) { }
 
-    async fetchById(gameId: number): Promise<AxiosResponse<any>> {
+    async fetchById(gameId: string): Promise<AxiosResponse<any>> {
         return await firstValueFrom(
             this.httpService.get(this.getUrl(`games/${gameId}`))
         );
@@ -25,6 +25,16 @@ export class GameApi {
 
     async fetchSearch(query: SearchGameDTO): Promise<AxiosResponse<any>> {
         let endpoint = `games?search=${encodeURIComponent(query.query)}`;
+        endpoint += `&page=${query.page}`;
+        endpoint += `&page_size=${query.pageSize}`;
+
+        return await firstValueFrom(
+            this.httpService.get(this.getUrl(endpoint))
+        );
+    }
+
+    async fetchGameList(query: SearchGameDTO): Promise<AxiosResponse<any>> {
+        let endpoint = `games?ordering=${encodeURIComponent(query.query)}`;
         endpoint += `&page=${query.page}`;
         endpoint += `&page_size=${query.pageSize}`;
 
