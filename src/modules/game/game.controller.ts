@@ -10,9 +10,9 @@ export class GameController {
     @Public()
     @Get('/')
     async getAllGames(
-        @Query() queries: { ranking: string, quantity?: number }
+        @Query() queries: { ranking: string, quantity?: string }
     ): Promise<GameSummaryDTO[]> {
-        const quantity = queries.quantity || 10;
+        const quantity: number = parseInt(queries.quantity || '10')
         if (queries.ranking === 'most-reviewed')
             return await this.gameService.mostReviewedGames(quantity);
         if (queries.ranking === 'best-rated')
