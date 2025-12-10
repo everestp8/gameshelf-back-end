@@ -30,6 +30,7 @@ export class GameController {
         return await this.gameService.fetchGameDetails(id);
     }
 
+    @Public()
     @Get('/search')
     async searchGames(
         @Query() queries: SearchGameDTO 
