@@ -41,3 +41,10 @@ Authorization: Bearer {{login.response.body.access_token}}
 
 }
 
+### Delete a Review
+
+@reviewId=9b55ecb5-a13f-4ca9-a5b3-8f83eea59d37
+DELETE http://{{host}}/reviews/{{reviewId}}
+Accept: application/json
+Authorization: Bearer {{login.response.body.access_token}}
+
