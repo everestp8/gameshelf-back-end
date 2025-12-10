@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Query, Req } from "@nestjs/common";
 import { ReviewService } from "./review.service";
 import { CreateReviewDTO, ReadReviewDTO } from "./review.dtos";
 
@@ -32,5 +32,13 @@ export class ReviewController {
         @Req() req: { user: { sub: string } }
     ): Promise<ReadReviewDTO> {
         return this.reviewService.create(review, req.user.sub);
+    }
+
+    @Delete('/:id')
+    delete(
+        @Req() req: { user: { sub: string } },
+        @Param('id') id: string
+    ): Promise<ReadReviewDTO> {
+        return this.reviewService.deleteByUserId(req.user.sub, id);
     }
 }

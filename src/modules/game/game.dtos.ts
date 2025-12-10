@@ -34,6 +34,7 @@ export interface GameSummaryDTO {
     id: string;
     title: string;
     backgroundImage: string;
+    metacritic?: number;
     rating?: number;
 }
 
@@ -42,6 +43,7 @@ export function toGameSummaryDTO(gameData: any, avgRating?: number): GameSummary
         id: gameData?.id.toString() || '',
         title: gameData?.name || '',
         backgroundImage: gameData?.background_image || '',
+        metacritic: gameData?.metacritic || undefined,
         rating: avgRating
     };
 }

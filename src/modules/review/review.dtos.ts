@@ -34,14 +34,14 @@ export function fromCreateReviewDTO(dto: CreateReviewDTO, authorId: string): Pri
     };
 }
 
-export function toReadReviewDTO(review: Review): ReadReviewDTO {
+export function toReadReviewDTO(review: Review, authoredBy: string): ReadReviewDTO {
     return {
         id: review.id,
         title: review.title,
         content: review.content,
         rating: review.rating.toNumber(),
         gameId: review.gameId,
-        authoredBy: review.authorId,
+        authoredBy: authoredBy,
         createdAt: review.createdAt,
         updatedAt: review.updatedAt
     };
