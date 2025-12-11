@@ -22,6 +22,10 @@ export interface ReadReviewDTO {
     authoredBy: string;
     createdAt: Date;
     updatedAt: Date;
+    game?: {
+        title: string;
+        backgroundImage?: string;
+    };
 }
 
 export function fromCreateReviewDTO(dto: CreateReviewDTO, authorId: string): Prisma.ReviewCreateInput {
@@ -34,16 +38,19 @@ export function fromCreateReviewDTO(dto: CreateReviewDTO, authorId: string): Pri
     };
 }
 
-export function toReadReviewDTO(review: Review, authoredBy: string): ReadReviewDTO {
+export function toReadReviewDTO(review: any, p0: string): ReadReviewDTO {
     return {
         id: review.id,
         title: review.title,
         content: review.content,
         rating: review.rating.toNumber(),
         gameId: review.gameId,
-        authoredBy: authoredBy,
+        authoredBy: review.author?.name || "Usuário desconhecido",
         createdAt: review.createdAt,
-        updatedAt: review.updatedAt
+        updatedAt: review.updatedAt,
+        game: review.game ? {
+            title: review.game.title,
+            backgroundImage: review.game.backgroundImage
+        } : undefined
     };
 }
-

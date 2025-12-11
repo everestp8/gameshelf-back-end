@@ -54,27 +54,23 @@ export class ReviewService {
     }
 
     async findByUserId(authorId: string): Promise<ReadReviewDTO[]> {
-        const reviews = await this.prismaService.review.findMany({
+        return this.prismaService.review.findMany({
             where: { authorId },
-        });
-
-        return Promise.all(
-            reviews.map(async r =>
-                toReadReviewDTO(r, await this.getAuthorName(r.authorId))
-            )
-        );
+            include: {
+                author: {select: { id: true, name: true }},
+                game: {select: { id: true, title: true }}
+            }
+        }).then(async reviews => Promise.all(reviews.map(async review => toReadReviewDTO(review, await this.getAuthorName(review.authorId)))));
     }
 
     async findByGameId(gameId: string): Promise<ReadReviewDTO[]> {
-        const reviews = await this.prismaService.review.findMany({
+        return this.prismaService.review.findMany({
             where: { gameId },
-        });
-
-        return Promise.all(
-            reviews.map(async r =>
-                toReadReviewDTO(r, await this.getAuthorName(r.authorId))
-            )
-        );
+            include: {
+                author: {select: { id: true, name: true }},
+                game: {select: { id: true, title: true }}
+            }
+        }).then(async reviews => Promise.all(reviews.map(async review => toReadReviewDTO(review, await this.getAuthorName(review.authorId)))));
     }
 
     async deleteByUserId(authorId: string, reviewId: string): Promise<ReadReviewDTO> {
